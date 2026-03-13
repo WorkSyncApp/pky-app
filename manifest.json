@@ -1,0 +1,24 @@
+{
+  "name": "Patel Krishi Yantra",
+  "short_name": "PKY",
+  "description": "Drinking Water Supply Project Cost & Income Monitor",
+  "start_url": "./SiteWorkApp.html",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#f0a500",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

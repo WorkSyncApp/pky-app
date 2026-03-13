@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f0a500">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PKY">
+<link rel="manifest" href="manifest.json">
+<title>Patel Krishi Yantra</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--border:#30363d;
+  --accent:#f0a500;--income:#3fb950;--cost:#e05c5c;--blue:#58a6ff;
+  --text:#e6edf3;--muted:#8b949e;--radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;}
+.screen{display:none;flex-direction:column;min-height:100vh;animation:fi .2s ease;}
+.screen.active{display:flex;}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:13px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;}
+.back{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:18px;flex-shrink:0;}
+.hdr h2{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;}
+.hdr .sub{font-size:11px;color:var(--muted);}
+.hero{padding:22px 16px 14px;background:linear-gradient(135deg,#161b22,#0d1117);}
+.logo{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:var(--accent);}
+.logo span{color:var(--text);}
+.logo-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.bal-card{background:linear-gradient(135deg,#1a2332,#1c2430);border:1px solid #2a3a4a;border-radius:16px;padding:18px;margin-top:14px;}
+.bal-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.bal-val{font-family:'Rajdhani',sans-serif;font-size:36px;font-weight:700;margin:4px 0;}
+.bal-row{display:flex;gap:12px;margin-top:14px;}
+.bal-item{flex:1;background:rgba(255,255,255,.04);border-radius:10px;padding:11px;}
+.bal-item .l{font-size:10px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;}
+.bal-item .v{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;}
+.bal-item.inc .l,.bal-item.inc .v{color:var(--income);}
+.bal-item.cst .l,.bal-item.cst .v{color:var(--cost);}
+.sec-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;padding:14px 16px 7px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;}
+.dcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px 13px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.dcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;}
+.dcard.ic::before{background:var(--income);}
+.dcard.cc::before{background:var(--cost);}
+.dcard:active{transform:scale(.97);}
+.dcard .ico{font-size:22px;margin-bottom:7px;}
+.dcard .cn{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;}
+.dcard .cs{font-size:11px;color:var(--muted);margin-top:1px;}
+.dcard .cb{margin-top:9px;font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;}
+.dcard.ic .cb{color:var(--income);}
+.dcard.cc .cb{color:var(--cost);}
+.mlist{padding:8px 16px 20px;display:flex;flex-direction:column;gap:9px;}
+.mitem{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;cursor:pointer;display:flex;align-items:center;gap:13px;transition:all .2s;}
+.mitem:active{background:var(--surface2);}
+.mitem .mi{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.mitem .mt{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;}
+.mitem .md{font-size:12px;color:var(--muted);margin-top:2px;}
+.mitem .mv{text-align:right;}
+.mitem .mv .vv{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;}
+.mitem .mv .vl{font-size:10px;color:var(--muted);}
+.sumrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;padding:11px 16px;}
+.sumbox{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 9px;text-align:center;}
+.sumbox .sl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.sumbox .sv{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-top:4px;}
+.sv.pay{color:var(--accent);}
+.sv.pid{color:var(--income);}
+.sv.bal{color:var(--cost);}
+.tabbar{display:flex;border-bottom:1px solid var(--border);margin:0 16px;}
+.tbtn{flex:1;padding:10px;text-align:center;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.tbtn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tcont{display:none;padding:16px;flex:1;overflow-y:auto;padding-bottom:80px;}
+.tcont.active{display:block;}
+.fg{margin-bottom:13px;}
+.fl{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-weight:500;}
+.fi,.fs{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+.fi:focus,.fs:focus{border-color:var(--accent);}
+.fi::placeholder{color:var(--muted);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fcalc{background:rgba(240,165,0,.08);border:1px dashed var(--accent);border-radius:8px;padding:11px 13px;}
+.fcalc .cl{font-size:10px;color:var(--muted);margin-bottom:3px;}
+.fcalc .cv{font-family:'Rajdhani',sans-serif;font-size:15px;color:var(--accent);}
+.bsub{width:100%;background:var(--accent);color:#0d1117;border:none;border-radius:10px;padding:15px;font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;cursor:pointer;margin-top:7px;transition:all .2s;}
+.bsub:active{transform:scale(.98);background:#d4920a;}
+.rlist{display:flex;flex-direction:column;gap:8px;}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;}
+.rcard .rh{display:flex;justify-content:space-between;align-items:flex-start;}
+.rcard .rn{font-size:14px;font-weight:500;}
+.rcard .rd{font-size:11px;color:var(--muted);}
+.rcard .ra{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;}
+.ra.pay{color:var(--accent);}
+.ra.rec{color:var(--income);}
+.rcard .rdets{display:flex;gap:11px;margin-top:7px;padding-top:7px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.rcard .rd2{font-size:11px;color:var(--muted);}
+.rcard .rd2 span{color:var(--text);font-weight:500;}
+.empty{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty .ei{font-size:44px;margin-bottom:11px;}
+.vcard{background:linear-gradient(135deg,rgba(240,165,0,.1),rgba(240,165,0,.03));border:1px solid rgba(240,165,0,.3);border-radius:var(--radius);padding:15px;margin-bottom:11px;}
+.vcard h3{font-family:'Rajdhani',sans-serif;font-size:16px;margin-bottom:11px;color:var(--accent);}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:20;}
+.nbtn{flex:1;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
+.nbtn .ni{font-size:21px;}
+.nbtn .nl{font-size:10px;color:var(--muted);}
+.nbtn.active .nl{color:var(--accent);}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--income);color:#0d1117;padding:9px 20px;border-radius:20px;font-weight:600;font-size:14px;opacity:0;transition:all .3s;z-index:100;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="hero">
+    <div class="logo">Patel Krishi <span>Yantra</span></div>
+    <div class="logo-sub">Drinking Water Supply Project Monitor</div>
+    <div class="bal-card">
+      <div class="bal-lbl">Net Balance</div>
+      <div class="bal-val" id="h-net">Rs.0</div>
+      <div class="bal-row">
+        <div class="bal-item inc"><div class="l">Total Income</div><div class="v" id="h-inc">Rs.0</div></div>
+        <div class="bal-item cst"><div class="l">Total Cost</div><div class="v" id="h-cst">Rs.0</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-title">Cost Categories</div>
+  <div class="grid2">
+    <div class="dcard cc" onclick="openCostDet('Labour','General')">
+      <div class="ico">&#128119;</div><div class="cn">Labour</div><div class="cs">Workers &amp; mandays</div>
+      <div class="cb" id="dc-Labour">Rs.0</div>
+    </div>
+    <div class="dcard cc" onclick="openCostCat('Free Issue Material')">
+      <div class="ico">&#128230;</div><div class="cn">Free Issue Mat.</div><div class="cs">Pipes, fittings</div>
+      <div class="cb" id="dc-FreeIssueMaterial">Rs.0</div>
+    </div>
+    <div class="dcard cc" onclick="openCostCat('Chargeable Material')">
+      <div class="ico">&#129521;</div><div class="cn">Chargeable Mat.</div><div class="cs">Cement, sand</div>
+      <div class="cb" id="dc-ChargeableMaterial">Rs.0</div>
+    </div>
+    <div class="dcard cc" onclick="openCostCat('Machine Hiring')">
+      <div class="ico">&#128668;</div><div class="cn">Machine Hiring</div><div class="cs">JCB, Tractor</div>
+      <div class="cb" id="dc-MachineHiring">Rs.0</div>
+    </div>
+    <div class="dcard cc" onclick="openCostCat('Indirect Cost')" style="grid-column:span 2">
+      <div class="ico">&#127968;</div><div class="cn">Indirect Cost</div><div class="cs">Rent, Salary, Tools, Shifting</div>
+      <div class="cb" id="dc-IndirectCost">Rs.0</div>
+    </div>
+  </div>
+  <div class="sec-title">Income Categories</div>
+  <div class="grid2">
+    <div class="dcard ic" onclick="openIncDet('HSC')">
+      <div class="ico">&#128295;</div><div class="cn">HSC</div><div class="cs">House connections</div>
+      <div class="cb" id="di-HSC">Rs.0</div>
+    </div>
+    <div class="dcard ic" onclick="openIncDet('Manual Excavation')">
+      <div class="ico">&#9935;</div><div class="cn">Manual Excav.</div><div class="cs">Earthwork (Cum)</div>
+      <div class="cb" id="di-ManualExcavation">Rs.0</div>
+    </div>
+    <div class="dcard ic" onclick="openIncDet('Pipe Laying')">
+      <div class="ico">&#128688;</div><div class="cn">Pipe Laying</div><div class="cs">Length (m)</div>
+      <div class="cb" id="di-PipeLaying">Rs.0</div>
+    </div>
+    <div class="dcard ic" onclick="openIncDet('Restoration')">
+      <div class="ico">&#128739;</div><div class="cn">Restoration</div><div class="cs">Road restoration</div>
+      <div class="cb" id="di-Restoration">Rs.0</div>
+    </div>
+    <div class="dcard ic" onclick="openIncDet('CC Cutting')" style="grid-column:span 2">
+      <div class="ico">&#9986;</div><div class="cn">CC Cutting</div><div class="cs">Concrete cutting (m)</div>
+      <div class="cb" id="di-CCCutting">Rs.0</div>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+</div>
+
+<!-- COST SUBS -->
+<div id="s-cost-subs" class="screen">
+  <div class="hdr"><div class="back" onclick="goBack()">&#8592;</div><div><h2 id="csubs-title">Cost</h2><div class="sub">Cost Dashboard</div></div></div>
+  <div class="sumrow">
+    <div class="sumbox"><div class="sl">Payable</div><div class="sv pay" id="csubs-pay">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Paid</div><div class="sv pid" id="csubs-pid">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Balance</div><div class="sv bal" id="csubs-bal">Rs.0</div></div>
+  </div>
+  <div class="mlist" id="csubs-list"></div>
+</div>
+
+<!-- COST DETAIL -->
+<div id="s-cost-det" class="screen">
+  <div class="hdr"><div class="back" onclick="goBack()">&#8592;</div><div><h2 id="cdet-title">Detail</h2><div class="sub" id="cdet-sub"></div></div></div>
+  <div class="sumrow">
+    <div class="sumbox"><div class="sl">Payable</div><div class="sv pay" id="cdet-pay">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Paid</div><div class="sv pid" id="cdet-pid">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Balance</div><div class="sv bal" id="cdet-bal">Rs.0</div></div>
+  </div>
+  <div class="tabbar">
+    <div class="tbtn active" id="ct0" onclick="cTab(0)">Data Entry</div>
+    <div class="tbtn" id="ct1" onclick="cTab(1)">Summary</div>
+  </div>
+  <div class="tcont active" id="ctab0"><div id="cform"></div></div>
+  <div class="tcont" id="ctab1"><div class="rlist" id="crecs"></div></div>
+</div>
+
+<!-- INCOME SUBS -->
+<div id="s-inc-subs" class="screen">
+  <div class="hdr"><div class="back" onclick="goBack()">&#8592;</div><div><h2 id="isubs-title">Income</h2><div class="sub">Income Dashboard</div></div></div>
+  <div class="sumrow">
+    <div class="sumbox"><div class="sl">Receivable</div><div class="sv pay" id="isubs-rec">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Received</div><div class="sv pid" id="isubs-pid">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Balance</div><div class="sv bal" id="isubs-bal">Rs.0</div></div>
+  </div>
+  <div class="mlist" id="isubs-list"></div>
+</div>
+
+<!-- INCOME DETAIL -->
+<div id="s-inc-det" class="screen">
+  <div class="hdr"><div class="back" onclick="goBack()">&#8592;</div><div><h2 id="idet-title">Detail</h2><div class="sub">Income Category</div></div></div>
+  <div class="sumrow">
+    <div class="sumbox"><div class="sl">Receivable</div><div class="sv pay" id="idet-rec">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Received</div><div class="sv pid" id="idet-pid">Rs.0</div></div>
+    <div class="sumbox"><div class="sl">Balance</div><div class="sv bal" id="idet-bal">Rs.0</div></div>
+  </div>
+  <div class="tabbar">
+    <div class="tbtn active" id="it0" onclick="iTab(0)">Data Entry</div>
+    <div class="tbtn" id="it1" onclick="iTab(1)">Summary</div>
+    <div class="tbtn" id="it2" onclick="iTab(2)">Month Verify</div>
+  </div>
+  <div class="tcont active" id="itab0"><div id="iform"></div></div>
+  <div class="tcont" id="itab1"><div class="rlist" id="irecs"></div></div>
+  <div class="tcont" id="itab2"><div id="iverify"></div></div>
+</div>
+
+<!-- REPORT -->
+<div id="s-report" class="screen">
+  <div class="hdr"><div style="width:36px"></div><div><h2>Full Report</h2><div class="sub">All categories</div></div></div>
+  <div style="padding:16px 16px 80px;overflow-y:auto;" id="report-body"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="nbtn active" id="nav0" onclick="navTo(0)"><div class="ni">&#127968;</div><div class="nl">Dashboard</div></div>
+  <div class="nbtn" id="nav1" onclick="navTo(1)"><div class="ni">&#128200;</div><div class="nl">Costs</div></div>
+  <div class="nbtn" id="nav2" onclick="navTo(2)"><div class="ni">&#128201;</div><div class="nl">Income</div></div>
+  <div class="nbtn" id="nav3" onclick="navTo(3)"><div class="ni">&#128202;</div><div class="nl">Report</div></div>
+  <div class="nbtn" id="nav4" onclick="navTo(4)"><div class="ni">&#9881;&#65039;</div><div class="nl">Settings</div></div>
+</div>
+
+<!-- SETTINGS -->
+<div id="s-settings" class="screen">
+  <div class="hdr"><div style="width:36px"></div><div><h2>Settings</h2><div class="sub">Google Sheets Sync</div></div></div>
+  <div style="padding:16px 16px 80px;overflow-y:auto;">
+
+    <div class="vcard" style="margin-bottom:14px">
+      <h3>&#128279; Apps Script Web App URL</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+        Paste your Google Apps Script Web App URL below. Follow the setup steps to get this URL.
+      </p>
+      <div class="fg">
+        <label class="fl">Web App URL</label>
+        <input class="fi" type="text" id="gs-url" placeholder="https://script.google.com/macros/s/.../exec" oninput="saveGS()">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="bsub" style="background:var(--blue);flex:1" onclick="testGS()">&#10003; Test Connection</button>
+        <button class="bsub" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);flex:1" onclick="clearGS()">Clear</button>
+      </div>
+      <div id="gs-status" style="margin-top:10px;font-size:13px;padding:10px 12px;border-radius:8px;display:none;line-height:1.5"></div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;margin-bottom:12px">
+      <div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--accent)">&#128196; Step 1 &mdash; Create Google Sheet</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.9">
+        1. Go to <b style="color:var(--text)">sheets.google.com</b> and create a new spreadsheet<br>
+        2. Name it <b style="color:var(--text)">Patel Krishi Yantra Records</b><br>
+        3. Create these 10 sheet tabs (right-click tab &gt; Rename):<br>
+        <div style="background:var(--surface2);border-radius:6px;padding:8px 10px;margin:8px 0;font-family:monospace;font-size:11px;color:var(--accent);line-height:2">
+          Labour &nbsp;&bull;&nbsp; Free_Issue_Material &nbsp;&bull;&nbsp; Chargeable_Material<br>
+          Machine_Hiring &nbsp;&bull;&nbsp; Indirect_Cost<br>
+          HSC &nbsp;&bull;&nbsp; Manual_Excavation &nbsp;&bull;&nbsp; Pipe_Laying<br>
+          Restoration &nbsp;&bull;&nbsp; CC_Cutting
+        </div>
+        <b style="color:var(--cost)">Important:</b> Use exact names with underscores, no spaces.
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;margin-bottom:12px">
+      <div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--accent)">&#9881;&#65039; Step 2 &mdash; Create Apps Script</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.9">
+        1. In your Google Sheet, click <b style="color:var(--text)">Extensions &gt; Apps Script</b><br>
+        2. Delete all existing code in the editor<br>
+        3. Copy and paste the code below<br>
+        4. Click <b style="color:var(--text)">Save</b> (floppy disk icon)
+      </div>
+      <div style="background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px;font-family:monospace;font-size:11px;color:#79c0ff;line-height:1.8;overflow-x:auto;white-space:pre">function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(data.sheet);
+    if (!sheet) sheet = ss.insertSheet(data.sheet);
+    sheet.appendRow(data.row);
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status:'error',message:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({status:'ok',message:'Patel Krishi Yantra connected'}))
+    .setMimeType(ContentService.MimeType.JSON);
+}</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;margin-bottom:12px">
+      <div style="font-family:Rajdhani,sans-serif;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--accent)">&#128640; Step 3 &mdash; Deploy as Web App</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.9">
+        1. Click <b style="color:var(--text)">Deploy &gt; New deployment</b><br>
+        2. Click the gear icon &gt; select <b style="color:var(--text)">Web app</b><br>
+        3. Set <b style="color:var(--text)">Execute as:</b> Me<br>
+        4. Set <b style="color:var(--text)">Who has access:</b> Anyone<br>
+        5. Click <b style="color:var(--text)">Deploy</b><br>
+        6. Click <b style="color:var(--text)">Authorize access</b> &gt; choose your Google account &gt; Allow<br>
+        7. Copy the <b style="color:var(--income)">Web App URL</b> shown<br>
+        8. Paste it in the field above and tap <b style="color:var(--text)">Test Connection</b>
+      </div>
+    </div>
+
+    <div style="background:rgba(224,92,92,.08);border:1px solid rgba(224,92,92,.3);border-radius:var(--radius);padding:14px">
+      <div style="font-family:Rajdhani,sans-serif;font-size:14px;font-weight:700;color:var(--cost);margin-bottom:6px">&#9888;&#65039; If you update the Apps Script code later</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7">
+        You must create a <b style="color:var(--text)">New Deployment</b> each time you change the code &mdash; not just save. Then update the Web App URL here again.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+
+// ===== DATA =====
+var db = {};
+try { db = JSON.parse(localStorage.getItem('pky_db') || '{}'); } catch(e) { db = {}; }
+function save() { try { localStorage.setItem('pky_db', JSON.stringify(db)); } catch(e) {} }
+
+function getRecs(cat, sub) {
+  if (!db[cat] || !db[cat][sub]) return [];
+  return db[cat][sub].records || [];
+}
+function addRec(cat, sub, rec) {
+  if (!db[cat]) db[cat] = {};
+  if (!db[cat][sub]) db[cat][sub] = { records: [] };
+  db[cat][sub].records.unshift(rec);
+  save();
+}
+
+// ===== COST CONFIG =====
+var CC = {
+  'Labour':              { type:'worker',   subs:[] },
+  'Free Issue Material': { type:'material', subs:['Pipe','Saddle','MDPE Pipe','FCV','GI Fitting','Other'] },
+  'Chargeable Material': { type:'material', subs:['Cement','Aggregate/Sand Mix','Other'] },
+  'Machine Hiring':      { type:'machine',  subs:['JCB','Tractor','Other'] },
+  'Indirect Cost':       { type:'material', subs:['Room Rent','Salary','Material Shifting','Tools','Other'] }
+};
+var CC_ICONS = { 'Labour':'&#128119;','Free Issue Material':'&#128230;','Chargeable Material':'&#129521;','Machine Hiring':'&#128668;','Indirect Cost':'&#127968;' };
+
+// ===== INCOME CONFIG =====
+var IC = {
+  'HSC':               { unit:'Nos', dims:false, proc:false },
+  'Manual Excavation': { unit:'Cum', dims:true,  proc:false },
+  'Pipe Laying':       { unit:'m',   dims:false, proc:true  },
+  'Restoration':       { unit:'Cum', dims:true,  proc:false },
+  'CC Cutting':        { unit:'m',   dims:false, proc:false }
+};
+var IC_ICONS = { 'HSC':'&#128295;','Manual Excavation':'&#9935;','Pipe Laying':'&#128688;','Restoration':'&#128739;','CC Cutting':'&#9986;' };
+var IC_ID    = { 'HSC':'HSC','Manual Excavation':'ManualExcavation','Pipe Laying':'PipeLaying','Restoration':'Restoration','CC Cutting':'CCCutting' };
+
+// ===== STATE =====
+var curCC = '', curSub = '', curIC = '';
+var navStack = ['home'];
+
+// ===== HELPERS =====
+function fmt(v) { return 'Rs.' + Number(v || 0).toLocaleString('en-IN'); }
+function todayVal() { return new Date().toISOString().slice(0, 10); }
+function el(id) { return document.getElementById(id); }
+function gv(id) { var e = el(id); return e ? e.value : ''; }
+function gn(id) { return parseFloat(gv(id)) || 0; }
+function setTxt(id, val) { var e = el(id); if (e) e.textContent = val; }
+
+function showToast(msg) {
+  var t = el('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+
+// ===== SCREENS =====
+function showScreen(id) {
+  var all = document.querySelectorAll('.screen');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
+  el('s-' + id).classList.add('active');
+}
+
+function goBack() {
+  navStack.pop();
+  var prev = navStack[navStack.length - 1] || 'home';
+  if      (prev === 'cost-subs') showScreen('cost-subs');
+  else if (prev === 'inc-subs')  showScreen('inc-subs');
+  else if (prev === 'cost-det')  showScreen('cost-det');
+  else if (prev === 'inc-det')   showScreen('inc-det');
+  else { updateHome(); showScreen('home'); }
+}
+
+function navTo(n) {
+  for (var i = 0; i < 4; i++) el('nav' + i).classList.remove('active');
+  el('nav' + n).classList.add('active');
+  navStack = ['home'];
+  if      (n === 0) { updateHome(); showScreen('home'); }
+  else if (n === 1) { openCostCat('Labour'); }
+  else if (n === 2) { openIncDet('HSC'); }
+  else if (n === 3) { buildReport(); showScreen('report'); }
+  else if (n === 4) { loadGSFields(); showScreen('settings'); }
+}
+
+// ===== HOME =====
+function calcCostTot(cat) {
+  var pay = 0, pid = 0, catD = db[cat] || {}, ks = Object.keys(catD);
+  for (var k = 0; k < ks.length; k++) {
+    var rs = catD[ks[k]].records || [];
+    for (var r = 0; r < rs.length; r++) { pay += rs[r].payable || 0; pid += rs[r].paid || 0; }
+  }
+  return { payable:pay, paid:pid, balance:pay-pid };
+}
+function calcIncTot(cat) {
+  var rs = getRecs('__inc__', cat), rec = 0, rid = 0;
+  for (var r = 0; r < rs.length; r++) { rec += rs[r].receivable || 0; rid += rs[r].received || 0; }
+  return { receivable:rec, received:rid, balance:rec-rid };
+}
+function calcSubTot(cat, sub) {
+  var rs = getRecs(cat, sub), pay = 0, pid = 0;
+  for (var r = 0; r < rs.length; r++) { pay += rs[r].payable || 0; pid += rs[r].paid || 0; }
+  return { payable:pay, paid:pid, balance:pay-pid };
+}
+
+function updateHome() {
+  var tc = 0, ti = 0, ck = Object.keys(CC), ik = Object.keys(IC);
+  for (var i = 0; i < ck.length; i++) {
+    var s = calcCostTot(ck[i]);
+    setTxt('dc-' + ck[i].replace(/\s+/g,''), fmt(s.payable));
+    tc += s.payable;
+  }
+  for (var j = 0; j < ik.length; j++) {
+    var si = calcIncTot(ik[j]);
+    setTxt('di-' + IC_ID[ik[j]], fmt(si.receivable));
+    ti += si.receivable;
+  }
+  setTxt('h-inc', fmt(ti));
+  setTxt('h-cst', fmt(tc));
+  var net = ti - tc;
+  setTxt('h-net', fmt(net));
+  el('h-net').style.color = net >= 0 ? 'var(--income)' : 'var(--cost)';
+}
+
+// ===== COST CATEGORY =====
+function openCostCat(cat) {
+  curCC = cat;
+  navStack.push('cost-subs');
+  setTxt('csubs-title', cat);
+  var s = calcCostTot(cat);
+  setTxt('csubs-pay', fmt(s.payable));
+  setTxt('csubs-pid', fmt(s.paid));
+  setTxt('csubs-bal', fmt(s.balance));
+
+  var cfg = CC[cat], html = '';
+  if (cfg.type === 'worker') {
+    var ws = calcSubTot(cat, 'General');
+    html += '<div class="mitem" onclick="openCostDet(\'Labour\',\'General\')">';
+    html += '<div class="mi" style="background:rgba(224,92,92,.15)">&#128119;</div>';
+    html += '<div style="flex:1"><div class="mt">Labour Records</div><div class="md">Workers, mandays, payments</div></div>';
+    html += '<div class="mv"><div class="vv" style="color:var(--cost)">' + fmt(ws.payable) + '</div><div class="vl">Payable</div></div></div>';
+  } else {
+    for (var i = 0; i < cfg.subs.length; i++) {
+      var sub = cfg.subs[i], ss = calcSubTot(cat, sub);
+      html += '<div class="mitem" onclick="openCostDet(\'' + cat + '\',\'' + sub + '\')">';
+      html += '<div class="mi" style="background:rgba(240,165,0,.1)">' + CC_ICONS[cat] + '</div>';
+      html += '<div style="flex:1"><div class="mt">' + sub + '</div><div class="md">' + cat + '</div></div>';
+      html += '<div class="mv"><div class="vv" style="color:var(--cost)">' + fmt(ss.payable) + '</div><div class="vl">Payable</div></div></div>';
+    }
+  }
+  el('csubs-list').innerHTML = html;
+  showScreen('cost-subs');
+}
+
+function openCostDet(cat, sub) {
+  curCC = cat; curSub = sub;
+  navStack.push('cost-det');
+  setTxt('cdet-title', sub === 'General' ? cat : sub);
+  setTxt('cdet-sub', cat);
+  cTab(0);
+  refreshCostSum();
+  buildCostForm();
+  buildCostRecs();
+  showScreen('cost-det');
+}
+
+function refreshCostSum() {
+  var s = calcSubTot(curCC, curSub);
+  setTxt('cdet-pay', fmt(s.payable));
+  setTxt('cdet-pid', fmt(s.paid));
+  setTxt('cdet-bal', fmt(s.balance));
+}
+
+function cTab(n) {
+  for (var i = 0; i < 2; i++) {
+    el('ct' + i).classList.toggle('active', i === n);
+    el('ctab' + i).classList.toggle('active', i === n);
+  }
+}
+
+// ===== FORM BUILDERS =====
+function mkInput(label, type, id, val, ph, oninp) {
+  var s = '<div class="fg"><label class="fl">' + label + '</label>';
+  s += '<input class="fi" type="' + type + '" id="' + id + '"';
+  if (val)   s += ' value="' + val + '"';
+  if (ph)    s += ' placeholder="' + ph + '"';
+  if (oninp) s += ' oninput="' + oninp + '"';
+  s += '></div>';
+  return s;
+}
+function mkSelect(label, id, opts) {
+  var s = '<div class="fg"><label class="fl">' + label + '</label><select class="fs" id="' + id + '">';
+  for (var i = 0; i < opts.length; i++) s += '<option>' + opts[i] + '</option>';
+  s += '</select></div>';
+  return s;
+}
+function mkCalc(label, id, init) {
+  return '<div class="fg"><div class="fcalc"><div class="cl">' + label + '</div><div class="cv" id="' + id + '">' + init + '</div></div></div>';
+}
+function mk2col(a, b) { return '<div class="frow">' + a + b + '</div>'; }
+
+// ===== COST FORMS =====
+function buildCostForm() {
+  var cfg = CC[curCC], html = '';
+  if (cfg.type === 'worker') {
+    html += mkInput('Date', 'date', 'f-date', todayVal(), '', '');
+    html += mkInput('Name of Worker', 'text', 'f-name', '', 'Worker name', '');
+    html += mk2col(
+      mkInput('Duty In Time', 'time', 'f-in', '08:00', '', 'calcLabour()'),
+      mkInput('Duty Out Time', 'time', 'f-out', '17:00', '', 'calcLabour()')
+    );
+    html += mkCalc('Total Worked Hours', 'f-hrs', '9.00 hrs');
+    html += mkCalc('Manday (Hours / 8)', 'f-md', '1.13');
+    html += mkInput('Rate per Manday (Rs.)', 'number', 'f-rate', '500', '', 'calcLabour()');
+    html += mkCalc('Payable Amount (Manday x Rate)', 'f-pay', 'Rs.0');
+    html += mkInput('Paid Amount (Rs.)', 'number', 'f-paid', '', '0', '');
+    html += mkCalc('Balance to Pay', 'f-bal', 'Rs.0');
+    html += '<button class="bsub" onclick="subWorker()">Submit Record</button>';
+  } else if (cfg.type === 'machine') {
+    html += mkInput('Date', 'date', 'f-date', todayVal(), '', '');
+    html += mkInput('Equipment Name', 'text', 'f-name', curSub, '', '');
+    html += mk2col(
+      mkInput('Start Reading (hrs)', 'number', 'f-start', '', '0', 'calcMachine()'),
+      mkInput('End Reading (hrs)', 'number', 'f-end', '', '0', 'calcMachine()')
+    );
+    html += mkCalc('Total Worked Hours (End - Start)', 'f-hrs', '0 hrs');
+    html += mkInput('Hourly Rate (Rs.)', 'number', 'f-rate', '0', '', 'calcMachine()');
+    html += mkCalc('Payable Amount (Hours x Rate)', 'f-pay', 'Rs.0');
+    html += mkInput('Paid Amount (Rs.)', 'number', 'f-paid', '', '0', '');
+    html += mkCalc('Balance to Pay', 'f-bal', 'Rs.0');
+    html += '<button class="bsub" onclick="subMachine()">Submit Record</button>';
+  } else {
+    html += mkInput('Date', 'date', 'f-date', todayVal(), '', '');
+    html += mkInput('Item', 'text', 'f-item', curSub, '', '');
+    html += mk2col(
+      mkInput('Qty', 'number', 'f-qty', '', '0', 'calcMat()'),
+      mkSelect('UoM', 'f-uom', ['Nos','Kg','Bag','Cum','m','Ltr','Set','LS'])
+    );
+    html += mkInput('Rate (Rs.)', 'number', 'f-rate', '0', '', 'calcMat()');
+    html += mkCalc('Payable Amount (Qty x Rate)', 'f-pay', 'Rs.0');
+    html += mkInput('Paid Amount (Rs.)', 'number', 'f-paid', '', '0', 'calcMat()');
+    html += mkCalc('Balance to Pay', 'f-bal', 'Rs.0');
+    html += '<button class="bsub" onclick="subMat()">Submit Record</button>';
+  }
+  el('cform').innerHTML = html;
+  // trigger calc immediately so values show on load
+  var cfg2 = CC[curCC];
+  if (cfg2.type === 'worker')   { calcLabour(); }
+  if (cfg2.type === 'machine')  { calcMachine(); }
+  if (cfg2.type === 'material') { calcMat(); }
+}
+
+// ===== COST CALCS =====
+function calcLabour() {
+  var inn = gv('f-in'), out = gv('f-out'), rate = gn('f-rate');
+  if (!inn || !out) return;
+  var ip = inn.split(':'), op = out.split(':');
+  var hrs = ((+op[0]*60 + +op[1]) - (+ip[0]*60 + +ip[1])) / 60;
+  if (hrs < 0) hrs = 0;
+  var md = hrs / 8, pay = md * rate;
+  setTxt('f-hrs', hrs.toFixed(2) + ' hrs');
+  setTxt('f-md', md.toFixed(2));
+  setTxt('f-pay', fmt(pay));
+}
+function calcMachine() {
+  var hrs = Math.max(0, gn('f-end') - gn('f-start'));
+  setTxt('f-hrs', hrs.toFixed(2) + ' hrs');
+  setTxt('f-pay', fmt(hrs * gn('f-rate')));
+}
+function calcMat() {
+  var pay = gn('f-qty') * gn('f-rate');
+  setTxt('f-pay', fmt(pay));
+  setTxt('f-bal', fmt(pay - gn('f-paid')));
+}
+
+// ===== COST SUBMIT =====
+function subWorker() {
+  var date = gv('f-date'), name = gv('f-name');
+  if (!date || !name) { showToast('Please fill Date and Name'); return; }
+  var ip = gv('f-in').split(':'), op = gv('f-out').split(':');
+  var hrs = Math.max(0, ((+op[0]*60 + +op[1]) - (+ip[0]*60 + +ip[1])) / 60);
+  var md = hrs / 8, rate = gn('f-rate'), paid = gn('f-paid'), pay = md * rate;
+  var rec = { date:date, name:name, in:gv('f-in'), out:gv('f-out'), hrs:hrs, manday:md, rate:rate, payable:pay, paid:paid, balance:pay-paid, id:Date.now() };
+  addRec(curCC, 'General', rec);
+  appendToSheet(SHEET_TAB[curCC] || curCC, recToRow('cost_worker', curCC, 'General', rec));
+  showToast('Record saved!');
+  refreshCostSum(); buildCostForm(); buildCostRecs(); updateHome();
+}
+function subMachine() {
+  var date = gv('f-date');
+  if (!date) { showToast('Please fill Date'); return; }
+  var hrs = Math.max(0, gn('f-end') - gn('f-start'));
+  var rate = gn('f-rate'), paid = gn('f-paid'), pay = hrs * rate;
+  var rec = { date:date, name:gv('f-name'), start:gn('f-start'), end:gn('f-end'), hrs:hrs, rate:rate, payable:pay, paid:paid, balance:pay-paid, id:Date.now() };
+  addRec(curCC, curSub, rec);
+  appendToSheet(SHEET_TAB[curCC] || curCC, recToRow('cost_machine', curCC, curSub, rec));
+  showToast('Record saved!');
+  refreshCostSum(); buildCostForm(); buildCostRecs(); updateHome();
+}
+function subMat() {
+  var date = gv('f-date');
+  if (!date) { showToast('Please fill Date'); return; }
+  var qty = gn('f-qty'), rate = gn('f-rate'), paid = gn('f-paid'), pay = qty * rate;
+  var rec = { date:date, item:gv('f-item'), qty:qty, uom:gv('f-uom'), rate:rate, payable:pay, paid:paid, balance:pay-paid, id:Date.now() };
+  addRec(curCC, curSub, rec);
+  appendToSheet(SHEET_TAB[curCC] || curCC, recToRow('cost_material', curCC, curSub, rec));
+  showToast('Record saved!');
+  refreshCostSum(); buildCostForm(); buildCostRecs(); updateHome();
+}
+
+// ===== COST RECORDS =====
+function buildCostRecs() {
+  var rs = getRecs(curCC, curSub), html = '';
+  if (!rs.length) {
+    html = '<div class="empty"><div class="ei">&#128203;</div><p>No records yet.<br>Add entries in Data Entry tab.</p></div>';
+  } else {
+    for (var i = 0; i < rs.length; i++) {
+      var r = rs[i];
+      html += '<div class="rcard"><div class="rh"><div>';
+      html += '<div class="rn">' + (r.name || r.item || 'Record') + '</div>';
+      html += '<div class="rd">' + r.date + '</div></div>';
+      html += '<div class="ra pay">' + fmt(r.payable) + '</div></div>';
+      html += '<div class="rdets">';
+      if (r.hrs  !== undefined) html += '<div class="rd2">Hrs: <span>' + r.hrs.toFixed(1) + '</span></div>';
+      if (r.qty  !== undefined) html += '<div class="rd2">Qty: <span>' + r.qty + ' ' + (r.uom||'') + '</span></div>';
+      if (r.rate !== undefined) html += '<div class="rd2">Rate: <span>' + fmt(r.rate) + '</span></div>';
+      html += '<div class="rd2">Paid: <span style="color:var(--income)">' + fmt(r.paid) + '</span></div>';
+      html += '<div class="rd2">Bal: <span style="color:var(--cost)">' + fmt(r.balance) + '</span></div>';
+      html += '</div></div>';
+    }
+  }
+  el('crecs').innerHTML = html;
+}
+
+// ===== INCOME CATEGORY =====
+function openIncomeCat(cat) {
+  curIC = cat;
+  navStack.push('inc-subs');
+  setTxt('isubs-title', cat);
+  var s = calcIncTot(cat), rs = getRecs('__inc__', cat);
+  setTxt('isubs-rec', fmt(s.receivable));
+  setTxt('isubs-pid', fmt(s.received));
+  setTxt('isubs-bal', fmt(s.balance));
+  var html = '';
+  html += '<div class="mitem" onclick="openIncDet(\'' + cat + '\')">';
+  html += '<div class="mi" style="background:rgba(63,185,80,.1)">' + IC_ICONS[cat] + '</div>';
+  html += '<div style="flex:1"><div class="mt">' + cat + ' Records</div><div class="md">' + rs.length + ' entries | Unit: ' + IC[cat].unit + '</div></div>';
+  html += '<div class="mv"><div class="vv" style="color:var(--income)">' + fmt(s.receivable) + '</div><div class="vl">Receivable</div></div></div>';
+  el('isubs-list').innerHTML = html;
+  showScreen('inc-subs');
+}
+
+function openIncDet(cat) {
+  curIC = cat;
+  navStack.push('inc-det');
+  setTxt('idet-title', cat);
+  iTab(0);
+  refreshIncSum();
+  buildIncForm();
+  buildIncRecs();
+  buildVerify();
+  showScreen('inc-det');
+}
+
+function refreshIncSum() {
+  var s = calcIncTot(curIC);
+  setTxt('idet-rec', fmt(s.receivable));
+  setTxt('idet-pid', fmt(s.received));
+  setTxt('idet-bal', fmt(s.balance));
+}
+
+function iTab(n) {
+  for (var i = 0; i < 3; i++) {
+    el('it' + i).classList.toggle('active', i === n);
+    el('itab' + i).classList.toggle('active', i === n);
+  }
+}
+
+// ===== INCOME FORMS =====
+function buildIncForm() {
+  var cfg = IC[curIC], html = '';
+  html += mkInput('Date', 'date', 'if-date', todayVal(), '', '');
+  if (curIC === 'HSC') {
+    html += mkInput('Total Completed Connections (Nos)', 'number', 'if-qty', '', '0', 'calcInc()');
+    html += mkInput('Approved Rate (Rs. per Nos)', 'number', 'if-rate', '', '0', 'calcInc()');
+    html += mkCalc('Receivable Amount (Qty x Rate)', 'if-rec', 'Rs.0');
+    html += mkInput('Received Amount (Rs.)', 'number', 'if-rcvd', '', '0', 'calcIncBal()');
+    html += mkCalc('Balance Receivable', 'if-bal', 'Rs.0');
+  } else if (cfg.dims) {
+    html += mkInput('Type of Strata', 'text', 'if-type', '', 'Soil / Moorum / Hard');
+    html += mk2col(
+      mkInput('Length (m)', 'number', 'if-l', '', '0', 'calcDims()'),
+      mkInput('Width (m)',  'number', 'if-w', '', '0', 'calcDims()')
+    );
+    html += mkInput('Depth (m)', 'number', 'if-d', '', '0', 'calcDims()');
+    html += mkCalc('Qty (L x B x H) Cum', 'if-qtyc', '0.000 Cum');
+    html += mkInput('Approved Rate (Rs. per Cum)', 'number', 'if-rate', '', '0', 'calcDims()');
+    html += mkCalc('Receivable Amount', 'if-rec', 'Rs.0');
+    html += mkInput('Received Amount (Rs.)', 'number', 'if-rcvd', '', '0', 'calcDims()');
+    html += mkCalc('Balance Receivable', 'if-bal', 'Rs.0');
+  } else if (cfg.proc) {
+    html += mkSelect('Type of Procedure', 'if-type', ['Manual','Machine']);
+    html += mkInput('Length (m)', 'number', 'if-qty', '', '0', 'calcInc()');
+    html += mkInput('Approved Rate (Rs. per m)', 'number', 'if-rate', '', '0', 'calcInc()');
+    html += mkCalc('Receivable Amount', 'if-rec', 'Rs.0');
+    html += mkInput('Received Amount (Rs.)', 'number', 'if-rcvd', '', '0', 'calcIncBal()');
+    html += mkCalc('Balance Receivable', 'if-bal', 'Rs.0');
+  } else {
+    html += mkInput('Length (m)', 'number', 'if-qty', '', '0', 'calcInc()');
+    html += mkInput('Approved Rate (Rs. per m)', 'number', 'if-rate', '', '0', 'calcInc()');
+    html += mkCalc('Receivable Amount', 'if-rec', 'Rs.0');
+    html += mkInput('Received Amount (Rs.)', 'number', 'if-rcvd', '', '0', 'calcIncBal()');
+    html += mkCalc('Balance Receivable', 'if-bal', 'Rs.0');
+  }
+  html += '<button class="bsub" onclick="subInc()">Submit Record</button>';
+  el('iform').innerHTML = html;
+}
+
+// ===== INCOME CALCS =====
+function calcDims() {
+  var l = gn('if-l'), w = gn('if-w'), d = gn('if-d'), rate = gn('if-rate'), rcvd = gn('if-rcvd');
+  var qty = l * w * d, rec = qty * rate;
+  setTxt('if-qtyc', qty.toFixed(3) + ' Cum');
+  setTxt('if-rec', fmt(rec));
+  setTxt('if-bal', fmt(rec - rcvd));
+}
+function calcInc() {
+  var rec = gn('if-qty') * gn('if-rate');
+  setTxt('if-rec', fmt(rec));
+  setTxt('if-bal', fmt(rec - gn('if-rcvd')));
+}
+function calcIncBal() {
+  var rec = gn('if-qty') * gn('if-rate');
+  setTxt('if-bal', fmt(rec - gn('if-rcvd')));
+}
+
+// ===== INCOME SUBMIT =====
+function subInc() {
+  var date = gv('if-date');
+  if (!date) { showToast('Please fill Date'); return; }
+  var cfg = IC[curIC], rate = gn('if-rate'), rcvd = gn('if-rcvd'), qty = 0;
+  var rec = { date:date, rate:rate, received:rcvd, id:Date.now() };
+  if (cfg.dims) {
+    var l = gn('if-l'), w = gn('if-w'), d = gn('if-d');
+    qty = l * w * d;
+    rec.l = l; rec.w = w; rec.d = d; rec.type = gv('if-type');
+  } else {
+    qty = gn('if-qty');
+    if (el('if-type')) rec.type = gv('if-type');
+  }
+  rec.qty = qty;
+  rec.receivable = qty * rate;
+  rec.balance = rec.receivable - rcvd;
+  addRec('__inc__', curIC, rec);
+  var incType = (IC[curIC].dims) ? 'income_dims' : (curIC === 'HSC' ? 'income_hsc' : 'income_other');
+  appendToSheet(SHEET_TAB[curIC] || curIC, recToRow(incType, '__inc__', curIC, rec));
+  showToast('Record saved!');
+  refreshIncSum(); buildIncForm(); buildIncRecs(); updateHome();
+}
+
+// ===== INCOME RECORDS =====
+function buildIncRecs() {
+  var rs = getRecs('__inc__', curIC), cfg = IC[curIC], html = '';
+  if (!rs.length) {
+    html = '<div class="empty"><div class="ei">&#128203;</div><p>No records yet.</p></div>';
+  } else {
+    for (var i = 0; i < rs.length; i++) {
+      var r = rs[i];
+      var qstr = r.qty % 1 ? r.qty.toFixed(3) : String(r.qty);
+      html += '<div class="rcard"><div class="rh"><div>';
+      html += '<div class="rn">' + (r.type || curIC) + ' - ' + qstr + ' ' + cfg.unit + '</div>';
+      html += '<div class="rd">' + r.date + '</div></div>';
+      html += '<div class="ra rec">' + fmt(r.receivable) + '</div></div>';
+      html += '<div class="rdets">';
+      html += '<div class="rd2">Rate: <span>' + fmt(r.rate) + '</span></div>';
+      html += '<div class="rd2">Received: <span style="color:var(--income)">' + fmt(r.received) + '</span></div>';
+      html += '<div class="rd2">Bal: <span style="color:var(--accent)">' + fmt(r.balance) + '</span></div>';
+      html += '</div></div>';
+    }
+  }
+  el('irecs').innerHTML = html;
+}
+
+// ===== VERIFICATION =====
+function buildVerify() {
+  var html = '<div class="vcard"><h3>Month-end Verification</h3>';
+  html += mkInput('Month', 'month', 'iv-month', todayVal().slice(0,7), '');
+  html += mkInput('Completed Qty (sum of daily entries)', 'number', 'iv-daily', '', '0');
+  html += mkInput('Qty to Consider for Billing', 'number', 'iv-bqty', '', '0', 'calcVerify()');
+  html += mkInput('Approved Rate (Rs.)', 'number', 'iv-rate', '', '0', 'calcVerify()');
+  html += mkCalc('Receivable Amount this Month', 'iv-rec', 'Rs.0');
+  html += '<button class="bsub" onclick="subVerify()" style="background:var(--blue)">Submit Verification</button>';
+  html += '</div><div class="rlist" id="vhist"></div>';
+  el('iverify').innerHTML = html;
+  prefillDaily();
+  loadVHist();
+}
+function prefillDaily() {
+  var month = gv('iv-month');
+  var rs = getRecs('__inc__', curIC), tot = 0;
+  for (var i = 0; i < rs.length; i++) {
+    if (rs[i].date && rs[i].date.slice(0,7) === month) tot += rs[i].qty || 0;
+  }
+  if (el('iv-daily')) el('iv-daily').value = tot.toFixed(3);
+}
+function calcVerify() {
+  setTxt('iv-rec', fmt(gn('iv-bqty') * gn('iv-rate')));
+}
+function subVerify() {
+  var month = gv('iv-month');
+  if (!month) { showToast('Select a month'); return; }
+  var vk = '__vfy__' + curIC;
+  if (!db[vk]) db[vk] = [];
+  db[vk].unshift({ month:month, dailyQty:gn('iv-daily'), billingQty:gn('iv-bqty'), rate:gn('iv-rate'), receivable:gn('iv-bqty')*gn('iv-rate'), id:Date.now() });
+  save(); showToast('Verification saved!'); loadVHist();
+}
+function loadVHist() {
+  var rs = db['__vfy__' + curIC] || [], html = '';
+  if (!rs.length) {
+    html = '<div class="empty"><div class="ei">&#128197;</div><p>No verifications yet.</p></div>';
+  } else {
+    for (var i = 0; i < rs.length; i++) {
+      var r = rs[i];
+      html += '<div class="rcard"><div class="rh"><div><div class="rn">Month: ' + r.month + '</div></div>';
+      html += '<div class="ra rec">' + fmt(r.receivable) + '</div></div>';
+      html += '<div class="rdets">';
+      html += '<div class="rd2">Daily Qty: <span>' + r.dailyQty + '</span></div>';
+      html += '<div class="rd2">Billing Qty: <span>' + r.billingQty + '</span></div>';
+      html += '<div class="rd2">Rate: <span>' + fmt(r.rate) + '</span></div>';
+      html += '</div></div>';
+    }
+  }
+  if (el('vhist')) el('vhist').innerHTML = html;
+}
+
+// ===== REPORT =====
+function buildReport() {
+  var html = '', ti = 0, tc = 0;
+  html += '<div style="font-family:Rajdhani,sans-serif;font-size:17px;font-weight:700;color:var(--income);margin-bottom:11px">INCOME SUMMARY</div>';
+  var ik = Object.keys(IC);
+  for (var i = 0; i < ik.length; i++) {
+    var cat = ik[i], s = calcIncTot(cat);
+    ti += s.receivable;
+    html += '<div class="rcard" style="margin-bottom:8px"><div class="rh">';
+    html += '<div class="rn">' + IC_ICONS[cat] + ' ' + cat + '</div>';
+    html += '<div class="ra rec">' + fmt(s.receivable) + '</div></div>';
+    html += '<div class="rdets"><div class="rd2">Received: <span>' + fmt(s.received) + '</span></div><div class="rd2">Balance: <span>' + fmt(s.balance) + '</span></div></div></div>';
+  }
+  html += '<div style="background:rgba(63,185,80,.1);border:1px solid var(--income);border-radius:10px;padding:14px;margin:8px 0 20px">';
+  html += '<div style="font-size:11px;color:var(--muted)">TOTAL RECEIVABLE</div>';
+  html += '<div style="font-family:Rajdhani,sans-serif;font-size:28px;font-weight:700;color:var(--income)">' + fmt(ti) + '</div></div>';
+
+  html += '<div style="font-family:Rajdhani,sans-serif;font-size:17px;font-weight:700;color:var(--cost);margin-bottom:11px">COST SUMMARY</div>';
+  var ck = Object.keys(CC);
+  for (var j = 0; j < ck.length; j++) {
+    var ccat = ck[j], cs = calcCostTot(ccat);
+    tc += cs.payable;
+    html += '<div class="rcard" style="margin-bottom:8px"><div class="rh">';
+    html += '<div class="rn">' + CC_ICONS[ccat] + ' ' + ccat + '</div>';
+    html += '<div class="ra pay">' + fmt(cs.payable) + '</div></div>';
+    html += '<div class="rdets"><div class="rd2">Paid: <span>' + fmt(cs.paid) + '</span></div><div class="rd2">Balance: <span>' + fmt(cs.balance) + '</span></div></div></div>';
+  }
+  html += '<div style="background:rgba(224,92,92,.1);border:1px solid var(--cost);border-radius:10px;padding:14px;margin:8px 0 20px">';
+  html += '<div style="font-size:11px;color:var(--muted)">TOTAL COST</div>';
+  html += '<div style="font-family:Rajdhani,sans-serif;font-size:28px;font-weight:700;color:var(--cost)">' + fmt(tc) + '</div></div>';
+
+  var net = ti - tc;
+  html += '<div style="background:rgba(88,166,255,.1);border:1px solid var(--blue);border-radius:12px;padding:18px">';
+  html += '<div style="font-size:11px;color:var(--muted)">NET BALANCE (Income - Cost)</div>';
+  html += '<div style="font-family:Rajdhani,sans-serif;font-size:34px;font-weight:700;color:' + (net >= 0 ? 'var(--income)' : 'var(--cost)') + '">' + fmt(net) + '</div></div>';
+  el('report-body').innerHTML = html;
+}
+
+// ===== INIT =====
+updateHome();
+
+
+// ===== GOOGLE SHEETS via Apps Script Web App =====
+var GS_URL = localStorage.getItem('pky_gs_url') || '';
+
+function saveGS() {
+  GS_URL = el('gs-url') ? el('gs-url').value.trim() : GS_URL;
+  localStorage.setItem('pky_gs_url', GS_URL);
+}
+function clearGS() {
+  GS_URL = '';
+  localStorage.removeItem('pky_gs_url');
+  if (el('gs-url')) el('gs-url').value = '';
+  gsStatus('Cleared.', '#8b949e');
+}
+function loadGSFields() {
+  if (el('gs-url')) el('gs-url').value = GS_URL;
+}
+function gsStatus(msg, color) {
+  var s = el('gs-status');
+  if (!s) return;
+  s.style.display = 'block';
+  s.style.background = color + '22';
+  s.style.color = color;
+  s.style.border = '1px solid ' + color + '55';
+  s.textContent = msg;
+}
+function testGS() {
+  saveGS();
+  if (!GS_URL) { gsStatus('Please paste your Web App URL first.', '#e05c5c'); return; }
+  gsStatus('Testing connection...', '#f0a500');
+  fetch(GS_URL)
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.status === 'ok') {
+        gsStatus('Connected! Ready to sync records.', '#3fb950');
+      } else {
+        gsStatus('Error: ' + (d.message || 'Unexpected response'), '#e05c5c');
+      }
+    })
+    .catch(function(e) {
+      gsStatus('Connection failed. Check the URL and try again.', '#e05c5c');
+    });
+}
+
+// Sheet tab name for each category
+var SHEET_TAB = {
+  'Labour':              'Labour',
+  'Free Issue Material': 'Free_Issue_Material',
+  'Chargeable Material': 'Chargeable_Material',
+  'Machine Hiring':      'Machine_Hiring',
+  'Indirect Cost':       'Indirect_Cost',
+  'HSC':                 'HSC',
+  'Manual Excavation':   'Manual_Excavation',
+  'Pipe Laying':         'Pipe_Laying',
+  'Restoration':         'Restoration',
+  'CC Cutting':          'CC_Cutting'
+};
+
+// Build a flat row from a record
+function recToRow(type, cat, sub, rec) {
+  var ts = new Date().toLocaleString('en-IN');
+  if (type === 'cost_worker') {
+    return [rec.date, rec.name, rec.in||'', rec.out||'', rec.hrs||0, rec.manday||0, rec.rate||0, rec.payable||0, rec.paid||0, rec.balance||0, ts];
+  } else if (type === 'cost_machine') {
+    return [rec.date, rec.name, rec.start||0, rec.end||0, rec.hrs||0, rec.rate||0, rec.payable||0, rec.paid||0, rec.balance||0, ts];
+  } else if (type === 'cost_material') {
+    return [rec.date, rec.item||sub, rec.qty||0, rec.uom||'', rec.rate||0, rec.payable||0, rec.paid||0, rec.balance||0, ts];
+  } else if (type === 'income_hsc') {
+    return [rec.date, rec.qty||0, rec.rate||0, rec.receivable||0, rec.received||0, rec.balance||0, ts];
+  } else if (type === 'income_dims') {
+    return [rec.date, rec.type||'', rec.l||0, rec.w||0, rec.d||0, rec.qty||0, rec.rate||0, rec.receivable||0, rec.received||0, rec.balance||0, ts];
+  } else {
+    return [rec.date, rec.type||'', rec.qty||0, rec.rate||0, rec.receivable||0, rec.received||0, rec.balance||0, ts];
+  }
+}
+
+// Send a row to the Apps Script Web App using no-cors fetch via form POST
+function appendToSheet(sheetTab, row) {
+  if (!GS_URL) return;
+  var payload = JSON.stringify({ sheet: sheetTab, row: row });
+  fetch(GS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: payload
+  })
+  .then(function(r) { return r.text(); })
+  .then(function(t) {
+    try {
+      var d = JSON.parse(t);
+      if (d.status === 'ok') {
+        showToast('Synced to Google Sheet!');
+      } else {
+        showToast('Sheet error: ' + (d.message || 'Unknown'));
+      }
+    } catch(e) {
+      showToast('Synced to Google Sheet!');
+    }
+  })
+  .catch(function() {
+    showToast('Offline - saved locally only');
+  });
+}
+
+window.saveGS       = saveGS;
+window.clearGS      = clearGS;
+window.testGS       = testGS;
+window.loadGSFields = loadGSFields;
+
+// expose globals
+window.openCostCat    = openCostCat;
+window.openIncomeCat  = openIncomeCat;
+window.openCostDet    = openCostDet;
+window.openIncDet     = openIncDet;
+window.goBack         = goBack;
+window.navTo          = navTo;
+window.cTab           = cTab;
+window.iTab           = iTab;
+window.calcLabour     = calcLabour;
+window.calcMachine    = calcMachine;
+window.calcMat        = calcMat;
+window.subWorker      = subWorker;
+window.subMachine     = subMachine;
+window.subMat         = subMat;
+window.calcDims       = calcDims;
+window.calcInc        = calcInc;
+window.calcIncBal     = calcIncBal;
+window.subInc         = subInc;
+window.calcVerify     = calcVerify;
+window.subVerify      = subVerify;
+
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').then(function(reg) {
+      console.log('SW registered');
+    }).catch(function(e) {
+      console.log('SW error', e);
+    });
+  });
+}
+</script>
+</body>
+</html>
